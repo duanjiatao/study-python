@@ -11,8 +11,8 @@ def check_proxy():
     免费代理IP提取并验证可用性
     :return:
     """
-    # ip_list = get_ip_from_html()
-    ip_list = get_ip_from_html2()
+    ip_list = get_ip_from_html()
+    # ip_list = get_ip_from_html2()
     for ip in ip_list:
         check_ip(ip)
 
@@ -76,13 +76,14 @@ def get_ip_from_html2():
     print('=' * 100)
     return ip_list
 
+pool_url='http://demo.spiderpy.cn/'  #http://172.20.7.41:60039
 
 def get_proxy():
     """
     从搭建的IP池获取代理IP
     :return:
     """
-    return requests.get("http://172.20.7.41:60039/get/").json()
+    return requests.get(f"{pool_url}/get/").json()
 
 
 def delete_proxy(proxy):
@@ -91,7 +92,7 @@ def delete_proxy(proxy):
     :param proxy:
     :return:
     """
-    requests.get("http://172.20.7.41:60039/delete/?proxy={}".format(proxy))
+    requests.get(f"{pool_url}/delete/?proxy={proxy}")
 
 
 def tt_pool():
