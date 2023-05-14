@@ -16,10 +16,10 @@ async def main():
         await page.locator('//*[@id="switchNormalCtrl"]').click()
         await page.locator("#accname").fill("duanjiatao@xgd.com")
         await page.locator("#accpwd").fill("xxxxxx")
-        await page.locator("form[name=\"accountlogin\"] div").filter(has_text="我已阅读并同意 服务条款 和 隐私政策").locator(
-            "span").first.click()
+        await page.locator('//*[@id="js-account-login"]/form[1]/div[6]/span').click()
         await page.get_by_role("button", name="登 录").click()
-        await page.get_by_role("link", name="获取验证码").click()
+        print(await page.title())
+        # await page.get_by_role("link", name="获取验证码").click()
 
         await asyncio.sleep(10)
         # 关闭浏览器
@@ -27,5 +27,5 @@ async def main():
         await browser.close()
 
 
-if __name__ == '__main__':
+def test_1():
     asyncio.run(main())
