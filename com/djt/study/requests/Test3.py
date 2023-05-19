@@ -76,36 +76,9 @@ def get_ip_from_html2():
     print('=' * 100)
     return ip_list
 
-pool_url='http://demo.spiderpy.cn/'  #http://172.20.7.41:60039
-
-def get_proxy():
-    """
-    从搭建的IP池获取代理IP
-    :return:
-    """
-    return requests.get(f"{pool_url}/get/").json()
-
-
-def delete_proxy(proxy):
-    """
-    删除IP池中的IP
-    :param proxy:
-    :return:
-    """
-    requests.get(f"{pool_url}/delete/?proxy={proxy}")
-
-
-def tt_pool():
-    for _ in range(100):
-        proxy = get_proxy()
-        ip = proxy.get('proxy')
-        if not check_ip(ip):
-            delete_proxy(ip)
-
 
 if __name__ == '__main__':
-    # check_proxy()
+    check_proxy()
     # check_ip('58.57.170.154:9002')
     # get_ip_from_html()
     # get_ip_from_html2()
-    tt_pool()

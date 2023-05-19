@@ -17,7 +17,6 @@ def test_download():
             page.locator('body > pre:nth-child(4) > a:nth-child(7)').click()
         download = download_info.value
         download.save_as(f'C:\\Users\\duanjiatao\\Desktop\\{download.suggested_filename}')
-
         time.sleep(5)
         context.close()
         browser.close()
