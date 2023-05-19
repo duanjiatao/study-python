@@ -37,7 +37,7 @@ def test_login():
         print("#" * 10, mng_page.url)
 
         # page.pause()
-        context.storage_state(path='auth/state.json')
+        context.storage_state(path='auth/mng.json')
         time.sleep(5)
         context.close()
         browser.close()
@@ -50,7 +50,7 @@ def test_longin2():
     """
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=False, channel='msedge')
-        context = browser.new_context(storage_state='auth/state.json')
+        context = browser.new_context(storage_state='auth/mng.json')
         page = context.new_page()
         page.goto(
             'https://mng-dev.jlpay.com/system/views/index.html?params=%7B%22access_token%22%3A%22eyJ0eXAiOiJKV1QiLCJwbGF0IjoiQUMiLCJhbGciOiJTTTNXaXRoU00yIn0.eyJzdWIiOiJQIiwidWlkIjoiMjAyMDAyMTc4MDA0MTY0OCIsIm5iZiI6MTY4NDM4ODI3MiwidW5hbWUiOiLmrrXkvbPmtpsiLCJpc3MiOiJKTFBBWSIsImV4cCI6MTY4NDQ3NDY3MiwiaWF0IjoxNjg0Mzg4MjcyLCJqdGkiOiIyMTMzMjUwNjQ4NzIyNzIxMXQwbkp1RTd5TncifQ.MEQCIAnJkBk3uQESu-Jq5r68tY19TKiQsgm5Mu64oYtA-icWAiB8cZubFvB1_u0dOQ7ZI7jKWJu04FQOdNgNDYsjPzlm1w%22%2C%22user_id%22%3A%222020021780041648%22%2C%22user_name%22%3A%22%E6%AE%B5%E4%BD%B3%E6%B6%9B%22%2C%22mobile%22%3A%22150****3321%22%2C%22lastLoginTime%22%3A%222023-05-18%2011%3A45%3A59%22%2C%22plat_code%22%3A%22manage%22%2C%22web_name%22%3A%22https%3A%2F%2Fmanage-dev.jlpay.com%22%7D')
@@ -101,26 +101,10 @@ def login_github(page):
     :return:
     """
     page.goto('https://github.com/login')
-    page.get_by_label("Username or email address").fill("djt317@139.com")
-    page.get_by_label("Password").fill("djt0708...")
+    page.get_by_label("Username or email address").fill("Username")
+    page.get_by_label("Password").fill("Password")
     # 点击登录按钮 等待页面跳转至APP验证页面
     with page.expect_navigation():
         page.get_by_role("button", name="Sign in").click()
     # 输入APP验证码 等待自动跳转至首页
     page.wait_for_url(url='https://github.com/', wait_until="networkidle", timeout=60000)
-
-
-def test_longin4():
-    """
-    测试重复登录github使用已保存的cookie避免重复登录
-    :return:
-    """
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False, channel='msedge')
-        context = browser.new_context(storage_state='auth/state.json')
-        page = context.new_page()
-        page.goto('https://github.com/')
-
-        time.sleep(5)
-        context.close()
-        browser.close()
