@@ -1,27 +1,23 @@
-import requests
+import time
 
+import requests
 from bs4 import BeautifulSoup
 from bs4.element import Tag
-
-
-def test_get_douban():
-    for i in range(1, 11):
-        get_douban(i)
 
 
 def get_douban(offset):
     """
     bs测试 获取豆瓣电影top250
-    :param offset: 页码
+    :param offset: 页码偏移(0开始)
     :return:
     """
     print()
-    url = f'https://movie.douban.com/top250?start={(offset - 1) * 25}'
+    url = f'https://movie.douban.com/top250?start={offset * 25}'
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 Edg/113.0.1774.35'
     }
     response = requests.get(url=url, headers=headers)
-    bs = BeautifulSoup(response.text)
+    bs = BeautifulSoup(response.text, features='lxml')
     ol = bs.find_all('ol', attrs={'class': 'grid_view'})[0]
     li_list = ol.find_all('li')
     for li in li_list:
@@ -76,3 +72,10 @@ class MovieInfo:
                f'简介:{self.summ_info}\n' \
                f'评价人数:{self.p_num}\n' \
                f'链接:{self.href}'
+
+
+if __name__ == '__main__':
+    start = time.perf_counter()
+    for i in range(10):
+        get_douban(i)
+    print(f'总耗时:{time.perf_counter() - start}')
