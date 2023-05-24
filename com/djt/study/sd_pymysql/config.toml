@@ -1,0 +1,16 @@
+[db]
+[db.mysql.connect]
+#连接配置
+host = "172.20.7.33"
+port = 3306
+user = "root"
+password = "5c5ce1144169f9d175fded60a21261ab"
+database = "test"
+charset = "utf8"
+#连接池配置
+[db.mysql.pool]
+maxconnections = 5
+mincached = 2
+maxcached = 5
+maxshared = 3
+blocking = "True"
