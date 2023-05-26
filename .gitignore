@@ -1,2 +1,5 @@
 /.idea/
 /study-python.iml
+/**/*.log
+/**/logs/
+/com/djt/study/sd_playwright/auth/
