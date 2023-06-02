@@ -11,7 +11,12 @@ from playwright.async_api import async_playwright, Page
 chat_count = 0
 
 
-async def chat():
+async def chat(question_list):
+    """
+    针对给出的问题，获取对应的回答
+    :param question_list:问题列表
+    :return:
+    """
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=False, channel='msedge')
         state_path = 'auth/chat.json'
@@ -21,10 +26,12 @@ async def chat():
         await page.goto('https://chat.jinshutuan.com')
         await page.wait_for_load_state(state='domcontentloaded')
         print(page.url)
-        await ask(page, '今天是几号')
-        print(await answer(page))
-        await ask(page, '介绍一下python')
-        print(await answer(page))
+
+        for question in question_list:
+            print('问=>', question)
+            await ask(page, question)
+            print('答=>', await answer(page))
+            print('=' * 100)
 
         await context.storage_state(path=state_path)
 
@@ -41,12 +48,15 @@ async def ask(page: Page, text: str):
     :param text:
     :return:
     """
+    # 输入提问内容
     await page.fill('//*[@id="app"]/div/div[1]/div/div/div/div/div/div/footer/div/div[3]/div/div[1]/div[1]/textarea',
                     text)
+    # 点击发送按钮
     await page.get_by_role("contentinfo").get_by_role("button").nth(4).click()
     # 等待停止按钮消失 说明回答完毕
     await page.wait_for_selector('#image-wrapper > div.sticky.bottom-0.left-0.flex.justify-center > button',
                                  state='hidden', timeout=60000)
+    # 更新对话框编号
     global chat_count
     chat_count += 2
 
@@ -73,4 +83,10 @@ def create_file(path: str):
 
 
 if __name__ == '__main__':
-    asyncio.run(chat())
+    question_list = [
+        '今天是几号',
+        '介绍一下python',
+        '你对人工智能的发展怎么看',
+        '用java写一个快速排序'
+    ]
+    asyncio.run(chat(question_list))

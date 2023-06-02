@@ -6,7 +6,7 @@ from Test3 import check_ip
 测试自建代理IP池
 """
 
-pool_url = 'http://demo.spiderpy.cn/'  # http://172.20.7.41:60039  http://demo.spiderpy.cn/
+pool_url = 'http://172.20.7.41:60039'  # http://172.20.7.41:60039  http://demo.spiderpy.cn/
 
 
 def get_proxy():
@@ -14,7 +14,7 @@ def get_proxy():
     从IP池获取代理IP
     :return:
     """
-    return requests.get(f"{pool_url}/get/").json()
+    return requests.get(f"{pool_url}/get?type=https").json()
 
 
 def delete_proxy(proxy):
