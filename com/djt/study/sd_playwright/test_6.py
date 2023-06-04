@@ -108,3 +108,29 @@ def login_github(page):
         page.get_by_role("button", name="Sign in").click()
     # 输入APP验证码 等待自动跳转至首页
     page.wait_for_url(url='https://github.com/', wait_until="networkidle", timeout=60000)
+
+
+def test_baidu():
+    with sync_playwright() as p:
+        context = p.chromium.launch_persistent_context(headless=False, channel='msedge',
+                                                       user_data_dir=r'D:\tmp\playwright\edge')
+        page = context.new_page()
+        page.goto('https://www.baidu.com/')
+        # 等待页面加载完成至网络空闲状态
+        page.wait_for_load_state('networkidle')
+        print(page.url)
+
+        time.sleep(60)
+        context.close()
+
+
+def test_toutiao():
+    with sync_playwright() as p:
+        context = p.chromium.launch_persistent_context(headless=False, channel='msedge',
+                                                       user_data_dir=r'D:\tmp\playwright\edge')
+        page = context.new_page()
+        page.goto('https://www.toutiao.com', wait_until='domcontentloaded', timeout=60000)
+        print(page.url)
+
+        time.sleep(60)
+        context.close()
