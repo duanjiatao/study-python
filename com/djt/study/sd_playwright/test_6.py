@@ -112,24 +112,14 @@ def login_github(page):
 
 def test_baidu():
     with sync_playwright() as p:
-        context = p.chromium.launch_persistent_context(headless=False, channel='msedge',
-                                                       user_data_dir=r'D:\tmp\playwright\edge')
-        page = context.new_page()
-        page.goto('https://www.baidu.com/')
+        # 用户自定义数据缓存目录 即非无痕模式
+        user_data_dir = r'D:\tmp\playwright\edge\User Data'
+        context = p.chromium.launch_persistent_context(headless=False, channel='msedge', user_data_dir=user_data_dir)
+        # 默认会打开一个空白标签 若不想再打开新标签 则使用如下方式 否则使用context.new_page()
+        page = context.pages[0]
+        page.goto('https://www.baidu.com/', wait_until='domcontentloaded', timeout=60000)
         # 等待页面加载完成至网络空闲状态
         page.wait_for_load_state('networkidle')
-        print(page.url)
-
-        time.sleep(60)
-        context.close()
-
-
-def test_toutiao():
-    with sync_playwright() as p:
-        context = p.chromium.launch_persistent_context(headless=False, channel='msedge',
-                                                       user_data_dir=r'D:\tmp\playwright\edge')
-        page = context.new_page()
-        page.goto('https://www.toutiao.com', wait_until='domcontentloaded', timeout=60000)
         print(page.url)
 
         time.sleep(60)
