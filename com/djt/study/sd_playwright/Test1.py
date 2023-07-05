@@ -5,8 +5,14 @@ from playwright.async_api import async_playwright
 
 async def main():
     async with async_playwright() as p:
+        # 录制视频
+
         # 打开浏edge览器
         browser = await p.chromium.launch(headless=False, channel="msedge")
+        # 录制视频
+        # video_dir = r'video/'
+        # record_video_size = {"width": 1920, "height": 1080}
+        # context = await browser.new_context(record_video_dir=video_dir, record_video_size=record_video_size)
         # 创建会话
         context = await browser.new_context()
         # 创建新标签页

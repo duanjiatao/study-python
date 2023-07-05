@@ -3,3 +3,4 @@
 /**/*.log
 /**/logs/
 /com/djt/study/sd_playwright/auth/
+/**/*.webm
