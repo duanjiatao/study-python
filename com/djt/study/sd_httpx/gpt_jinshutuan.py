@@ -37,6 +37,26 @@ async def ask(client: httpx.AsyncClient(), user_id, text: str):
     return resp.text
 
 
+def ask_async(user_id, text: str):
+    """
+    同步提问
+    :param user_id:
+    :param text:
+    :return:
+    """
+    data = {
+        "prompt": text,
+        "userId": f"#/chat/{user_id}",
+        "network": True,
+        "system": "",
+        "withoutContext": False,
+        "stream": False
+    }
+    headers['User-Agent'] = ua.random
+    resp = httpx.post(url=url, headers=headers, data=data, timeout=timeout)
+    return resp.text
+
+
 async def run():
     user_a = '1688549417894'
     user_b = '1688549429442'

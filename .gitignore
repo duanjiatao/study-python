@@ -2,5 +2,6 @@
 /study-python.iml
 /**/*.log
 /**/logs/
+/**/log/
 /com/djt/study/sd_playwright/auth/
 /**/*.webm
