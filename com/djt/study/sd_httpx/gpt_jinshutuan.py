@@ -52,7 +52,6 @@ def ask_async(user_id, text: str):
         "withoutContext": False,
         "stream": False
     }
-    headers['User-Agent'] = ua.random
     resp = httpx.post(url=url, headers=headers, data=data, timeout=timeout)
     return resp.text
 
