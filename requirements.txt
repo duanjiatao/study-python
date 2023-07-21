@@ -1,4 +1,5 @@
 aiohttp==3.8.4
+airtest==1.3.0.1
 beautifulsoup4==4.11.1
 DBUtils==3.0.3
 fake_useragent==1.1.3
@@ -8,6 +9,7 @@ numpy==1.23.5
 pandas==2.0.1
 parsel==1.8.1
 playwright==1.34.0
+pocoui==1.0.89
 pycryptodome==3.18.0
 PyMySQL==1.0.3
 Requests==2.31.0

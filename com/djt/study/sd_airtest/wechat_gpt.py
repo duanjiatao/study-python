@@ -6,7 +6,6 @@ airtest监控微信聊天，并使用GPT与对方聊天
 """
 
 import logging
-import traceback
 
 from airtest.cli.parser import cli_setup
 from airtest.core.api import *
@@ -19,11 +18,13 @@ logger.setLevel(logging.WARN)
 
 if not cli_setup():
     auto_setup(__file__, logdir=True,
-               devices=['android://127.0.0.1:5037/10.150.190.17:5555?cap_method=MINICAP&touch_method=MAXTOUCH&', ],
+               devices=[
+                   'android://127.0.0.1:5037/10.150.190.17:5555?cap_method=MINICAP&touch_method=MAXTOUCH&', ],
                project_root=r'D:\workspace\Idea\IdeaProjects\study-python\com\djt\study\sd_airtest')
 
-poco = AndroidUiautomationPoco(use_airtest_input=True, screenshot_each_action=False)
-
+poco = AndroidUiautomationPoco(use_airtest_input=False, screenshot_each_action=False)
+# 屏幕分辨率
+resolution = (1080, 2400)
 # 账号名
 my_name = '涛哥二号'
 # 头像名
@@ -32,7 +33,7 @@ my_logo = my_name + '头像'
 wechat = 'wechat2'
 # 对话超时时间
 chat_timeout = 60
-# GPT回话ID
+# GPT会话ID
 chat_user_id = '1689045263535'
 # 每个对话的最后一条消息
 chat_last_msg = {}
@@ -48,7 +49,8 @@ def start_wx():
     # 返回桌面
     home()
     # 启动微信
-    touch(Template(rf'.\image\{wechat}.png', resolution=(1080, 2400)))
+    touch(Template(rf'.\image\{wechat}.png', resolution=resolution))
+    print('微信已启动...')
 
 
 def go_chat_home():
@@ -59,7 +61,7 @@ def go_chat_home():
     chat_home = poco(text='微信')
     while not chat_home.exists():
         keyevent("BACK")
-        sleep(1)
+        # sleep(1)
     chat_home.click()
 
 
@@ -75,9 +77,11 @@ def start_listen():
         # 检查是否有未读消息
         unread_msg = poco('com.tencent.mm:id/kmv')
         if not unread_msg.exists():
-            sleep(1)
+            sleep(0.5)
             continue
+        # 进入对话框
         unread_msg.click()
+        # 查看对方类型 即单聊或群聊
         poco('com.tencent.mm:id/eo').click()
         title = poco('android:id/title')
         is_group = False
@@ -157,21 +161,17 @@ def get_question_list():
     :return:
     """
     hp_list = poco('com.tencent.mm:id/hp')
+    hp_list.long_click()
     if not hp_list.exists():
         return None
+    # com.tencent.mm:id/b5m  xx条未读消息
+    # 需要监听的群 必须取消消息免打扰 并且需要有人@我的时候才进群
+    # 聊天界面的名称备注可重复
+    # 懒加载：每次进入一个对话框，判断是都是否有记录该对话是个人还是群聊，若有记录则无需再查看对话框属性，若无则查看并记录
+
     # 待实现...
 
 
 if __name__ == '__main__':
-    try:
-        start_wx()
-        print('微信已启动...')
-        # 切换输入法
-        device().yosemite_ime.start()
-        print('输入法已切换...')
-        start_listen()
-    except Exception as e:
-        traceback.print_exc()
-    finally:
-        # 换回输入法
-        device().yosemite_ime.end()
+    start_wx()
+    start_listen()
