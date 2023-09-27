@@ -5,3 +5,4 @@
 /**/log/
 /com/djt/study/sd_playwright/auth/
 /**/*.webm
+/com/djt/study/sd_playwright/apollo/auth/github.json
